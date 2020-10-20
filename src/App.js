@@ -4,12 +4,14 @@ import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import { FormattedMessage, IntlProvider, useIntl } from 'react-intl'
 import messages from './translations/en-US.json'
-import { useInfiniteQuery } from 'react-query'
+import { QueryCache, ReactQueryCacheProvider, useInfiniteQuery } from 'react-query'
 import axios from 'axios'
 import ListItem from '@material-ui/core/ListItem'
 import List from '@material-ui/core/List'
 import ListItemText from '@material-ui/core/ListItemText'
 import { ReactQueryDevtools } from 'react-query-devtools'
+
+const queryCache = new QueryCache()
 
 // eslint-disable-next-line no-unused-vars
 function Main () {
@@ -41,12 +43,12 @@ function Main () {
   )
 }
 
-const fetchFunc = async (key, cursor = 0) => {
-  console.log('cursor:', cursor)
+const LIMIT = null
+const fetchFunc = async (key, cursor) => {
   const { data } = await axios.get('http://localhost:7000/api/info/browser', {
     params: {
-      limit: 20,
-      skip: cursor,
+      limit: LIMIT,
+      startkey: cursor,
     },
   })
   return data
@@ -61,17 +63,17 @@ function ListElem ({ text }) {
 }
 
 function MainList () {
-  const { data, status, fetchMore } = useInfiniteQuery(['docs'], fetchFunc, {
+  const { data, status, fetchMore, isFetchingMore, isFetching, canFetchMore } = useInfiniteQuery(['docs'], fetchFunc, {
     refetchOnWindowFocus: false,
     retry: false,
     getFetchMore: (lastGroup, allGroups) => {
-      console.log('lastGroup:', lastGroup)
-      console.log('allGroups:', allGroups)
-      return 20
+      const { total_rows: totalRows, rows = [] } = lastGroup?.results
+      const cursor = rows[rows.length - 1].key
+      const rowsFetched = allGroups.length * LIMIT
+      const isOver = !LIMIT || rowsFetched === totalRows || rows.length < LIMIT
+      return isOver ? false : parseInt(cursor) + 1
     },
   })
-  console.log('status:', status)
-  console.log('data:', data)
   return (
     <>
       <CssBaseline/>
@@ -79,30 +81,29 @@ function MainList () {
       <Container maxWidth="lg">
         <div>
           <List component="nav" dense>
-            {/* {
-              (data?.results && data?.results?.length) &&
-              data.results.map()
-            }*/}
             {
               (data) &&
               data.map((group, i) => (
                 <React.Fragment key={i}>
                   {
-                    (group?.results && group?.results?.length) && group.results.map(elem => <ListElem key={elem.id}
-                                                                                                      text={elem.id}/>)
+                    group?.results?.rows?.length && group.results.rows.map(elem => (
+                      <ListElem
+                        key={elem.id}
+                        text={elem.id}
+                      />
+                    ))
                   }
                 </React.Fragment>
               ))
-              
+  
             }
             <ListElem/>
           </List>
-          <button
-            onClick={() => fetchMore()}
-          >
+          <button disabled={!canFetchMore || isFetchingMore} onClick={() => fetchMore()}>
             More
           </button>
         </div>
+        <div>{isFetching && !isFetchingMore ? 'Fetching...' : null}</div>
       </Container>
     </>
   )
@@ -111,8 +112,10 @@ function MainList () {
 export default function App () {
   return (
     <IntlProvider defaultLocale="it" locale="it" messages={messages}>
-      <MainList/>
-      <ReactQueryDevtools/>
+      <ReactQueryCacheProvider queryCache={queryCache}>
+        <MainList/>
+        <ReactQueryDevtools/>
+      </ReactQueryCacheProvider>
     </IntlProvider>
   )
 }
