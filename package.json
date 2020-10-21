@@ -19,8 +19,8 @@
     "react-query-devtools": "^2.6.0"
   },
   "scripts": {
-    "start rewired": "react-app-rewired start",
-    "start": "react-scripts start",
+    "start rewired": "set PORT=3001&&react-app-rewired start",
+    "start": "set PORT=3001&&react-scripts start",
     "build": "react-scripts build"
   },
   "browserslist": {

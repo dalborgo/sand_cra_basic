@@ -6,10 +6,9 @@ import { FormattedMessage, IntlProvider, useIntl } from 'react-intl'
 import messages from './translations/en-US.json'
 import { QueryCache, ReactQueryCacheProvider, useInfiniteQuery } from 'react-query'
 import axios from 'axios'
-import ListItem from '@material-ui/core/ListItem'
-import List from '@material-ui/core/List'
-import ListItemText from '@material-ui/core/ListItemText'
 import { ReactQueryDevtools } from 'react-query-devtools'
+import useIntersectionObserver from './hooks/useIntersectionObserver'
+import Link from '@material-ui/core/Link'
 
 const queryCache = new QueryCache()
 
@@ -43,7 +42,7 @@ function Main () {
   )
 }
 
-const LIMIT = null
+const LIMIT = 40
 const fetchFunc = async (key, cursor) => {
   const { data } = await axios.get('http://localhost:7000/api/info/browser', {
     params: {
@@ -54,11 +53,19 @@ const fetchFunc = async (key, cursor) => {
   return data
 }
 
-function ListElem ({ text }) {
+function ListElem ({ text, value }) {
+  const [first] = value
+  const preventDefault = (event) => event.preventDefault()
   return (
-    <ListItem>
-      <ListItemText primary={text}/>
-    </ListItem>
+    <Link
+      component={'div'}
+      href="#"
+      onClick={preventDefault}
+      style={{ color: first.includes('phone') ? 'blue' : 'gray' }}
+      variant="body2"
+    >
+      {text}
+    </Link>
   )
 }
 
@@ -74,36 +81,48 @@ function MainList () {
       return isOver ? false : parseInt(cursor) + 1
     },
   })
+  const loadMoreButtonRef = React.useRef()
+  useIntersectionObserver({
+    target: loadMoreButtonRef,
+    onIntersect: fetchMore,
+    enabled: canFetchMore,
+  })
   return (
     <>
       <CssBaseline/>
       <div>{status}</div>
       <Container maxWidth="lg">
-        <div>
-          <List component="nav" dense>
+        <div style={{ height: 600 }}>
+          <div style={{ maxHeight: '100%', overflow: 'auto' }}>
             {
               (data) &&
-              data.map((group, i) => (
+              data.map((page, i) => (
                 <React.Fragment key={i}>
                   {
-                    group?.results?.rows?.length && group.results.rows.map(elem => (
+                    page?.results?.rows?.length && page.results.rows.map(elem => (
                       <ListElem
                         key={elem.id}
                         text={elem.id}
+                        value={elem.value}
                       />
                     ))
                   }
                 </React.Fragment>
               ))
-  
             }
-            <ListElem/>
-          </List>
-          <button disabled={!canFetchMore || isFetchingMore} onClick={() => fetchMore()}>
-            More
-          </button>
+            <button
+              disabled={!canFetchMore || isFetchingMore}
+              onClick={() => fetchMore()}
+              ref={loadMoreButtonRef}
+              style={{ visibility: !data ? 'hidden' : undefined }}
+            >
+              More
+            </button>
+          </div>
         </div>
-        <div>{isFetching && !isFetchingMore ? 'Fetching...' : null}</div>
+        <div>
+          {isFetching && !isFetchingMore ? 'Background Updating...' : null}
+        </div>
       </Container>
     </>
   )
