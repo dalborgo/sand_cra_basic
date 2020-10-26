@@ -4,10 +4,13 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.0",
+    "ajv": "^6.12.6",
     "axios": "^0.20.0",
+    "jsoneditor-react": "^3.0.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-intl": "^5.8.6",
+    "react-json-editor-ajrm": "^2.5.13",
     "react-query": "^2.25.2",
     "react-scripts": "3.4.3"
   },
