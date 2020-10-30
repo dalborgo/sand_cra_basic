@@ -5,10 +5,8 @@
       "warn",
       {
         "allow": [
-          "dir",
           "group",
-          "groupCollapsed",
-          "table"
+          "groupCollapsed"
         ]
       }
     ],
@@ -23,6 +21,9 @@
           "_",
           "j",
           "i",
+          "x",
+          "y",
+          "s",
           "Q"
         ]
       }
@@ -38,12 +39,7 @@
       }
     ],
     "curly": 2,
-    "no-unused-vars": [
-      "warn",
-      {
-        "varsIgnorePattern": "^_+$"
-      }
-    ],
+    "no-unused-vars": "warn",
     "camelcase": [
       1,
       {
@@ -103,7 +99,13 @@
     ],
     "react/display-name": 1,
     "react/forbid-prop-types": 0,
-    "react/sort-prop-types": 1,
+    "react/sort-prop-types": [
+      1,
+      {
+        "ignoreCase": true,
+        "callbacksLast": true
+      }
+    ],
     "react/jsx-boolean-value": 1,
     "react/jsx-first-prop-new-line": [
       1,
@@ -135,7 +137,12 @@
     "react/jsx-no-duplicate-props": 1,
     "react/jsx-no-literals": 0,
     "react/jsx-no-undef": 1,
-    "react/jsx-sort-props": 1,
+    "react/jsx-sort-props": [
+      1,
+      {
+        "ignoreCase": true
+      }
+    ],
     "react/jsx-uses-react": 1,
     "react/jsx-uses-vars": 1,
     "react/no-danger": 1,
