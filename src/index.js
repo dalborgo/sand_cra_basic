@@ -3,15 +3,14 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App5'
 
-ReactDOM.render(
-  <>
-    <App/>
-  </>,
+ReactDOM.unstable_createRoot(
   document.getElementById('root')
-)
-/*ReactDOM.render(
+).render(<App />)
+/*
+ReactDOM.render(
   <React.StrictMode>
     <App/>
   </React.StrictMode>,
   document.getElementById('root')
-)*/
+)
+*/
