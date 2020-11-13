@@ -14,7 +14,6 @@ const useStore = create(set => ({
       id: 'general_configuration',
       columns: ['cover_default'],
     })
-    console.log('response:', response)
     set({ fishes: response.results })
   },
 }))
