@@ -8,6 +8,7 @@ import MomentAdapter from '@material-ui/pickers/adapter/moment'
 require('moment/locale/it')
 require('moment/locale/de')
 
+
 const App7 = memo(function App7 () {
   return (
     <IntlProvider defaultLocale="it" locale="it" messages={messages}>
