@@ -1,6 +1,6 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
-import { Slide } from '@material-ui/core'
+import { Fade } from '@material-ui/core'
 import { DateRangeDelimiter, DateRangePicker } from '@material-ui/pickers'
 import { FormattedMessage } from 'react-intl'
 import moment from 'moment'
@@ -10,12 +10,13 @@ const DatePickerField = ({
   open,
   setOpen,
   setDateRange,
+  refer,
   field: { value, name },
   ...other
 }) => {
   // eslint-disable-next-line no-unused-vars
   const [start, end] = value
-  const disabledEnd = !end && !open
+  const disabledEnd = !end && !start && !open
   return (
     <DateRangePicker
       disableAutoMonthSwitching
@@ -37,11 +38,7 @@ const DatePickerField = ({
           form.setFieldValue(name, date, false)
         }
       }
-      onClose={
-        () => {
-          setOpen(false)
-        }
-      }
+      onClose={() => {setOpen(false)}}
       open={open}
       reduceAnimations
       renderInput={
@@ -70,6 +67,7 @@ const DatePickerField = ({
             <TextField
               {...endProps}
               disabled={disabledEnd}
+              inputRef={refer}
               error={false}
               helperText={null}
               InputLabelProps={
@@ -97,7 +95,7 @@ const DatePickerField = ({
         )
       }
       startText="Inizio"
-      TransitionComponent={Slide}
+      TransitionComponent={Fade}
       value={value}
       {...other}
     />

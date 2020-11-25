@@ -1,9 +1,8 @@
-import React, { memo, useState } from 'react'
-import Grid from '@material-ui/core/Grid'
+import React, { memo, useRef, useState } from 'react'
 import { Field, Form, Formik } from 'formik'
 import { FormattedDate, IntlProvider, useIntl } from 'react-intl'
 import messages from './translations/it-IT.json'
-import moment from 'moment';
+import moment from 'moment'
 import { LocalizationProvider } from '@material-ui/pickers'
 import MomentAdapter from '@material-ui/pickers/adapter/moment'
 import Container from '@material-ui/core/Container'
@@ -40,7 +39,7 @@ const Mio = memo(() => {
           dateStyle: 'medium',
         })
       }{' - '}
-      {<FormattedDate dateStyle={'medium'}  value={endDate} />}
+      {<FormattedDate dateStyle={'medium'} value={endDate}/>}
     </Typography>
   )
 })
@@ -48,6 +47,7 @@ const Mio = memo(() => {
 export default function App10 () {
   const setDateRange = useStore(state => state.setDateRange)
   const [open, setOpen] = useState(false)
+  const refer = useRef(null)
   return (
     <IntlProvider defaultLocale="it" locale="it" messages={messages}>
       <LocalizationProvider dateAdapter={MomentAdapter} locale="it">
@@ -58,24 +58,24 @@ export default function App10 () {
               value => {
                 setOpen(false)
                 setDateRange(value.dateRange)
+                refer.current.blur()
               }
             }
           >
             {
               () => (
-                <Form>
-                  <Grid container>
-                    <Grid container item xs={12}>
-                      <Field
-                        component={DatePickerField}
-                        name="dateRange"
-                        open={open}
-                        setDateRange={setDateRange}
-                        setOpen={setOpen}
-                      />
-                      <Button style={{ display: 'none' }} type="submit"/>
-                    </Grid>
-                  </Grid>
+                <Form >
+                  <Field
+                    
+                    component={DatePickerField}
+                    name="dateRange"
+                    open={open}
+                    setDateRange={setDateRange}
+                    setOpen={setOpen}
+                    refer={refer}
+                  />
+                  <Button type="submit"/>
+                  <div />
                 </Form>
               )
             }
