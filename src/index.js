@@ -1,7 +1,7 @@
 import './wdyr'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App7'
+import App from './App10'
 
 ReactDOM.unstable_createRoot(
   document.getElementById('root')
