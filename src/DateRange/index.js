@@ -16,7 +16,7 @@ export default function BasicDateRangePicker () {
         (startProps, endProps) => (
           <React.Fragment>
             <TextField {...startProps} />
-            <DateRangeDelimiter><FormattedMessage defaultMessage="a" id="to"/></DateRangeDelimiter>
+            <DateRangeDelimiter><FormattedMessage defaultMessage="a" id="common.to"/></DateRangeDelimiter>
             <TextField {...endProps} />
           </React.Fragment>
         )

@@ -63,7 +63,7 @@ const DatePickerField = ({
               }
               size="small"
             />
-            <DateRangeDelimiter><FormattedMessage defaultMessage="a" id="to"/></DateRangeDelimiter>
+            <DateRangeDelimiter><FormattedMessage defaultMessage="a" id="common.to"/></DateRangeDelimiter>
             <TextField
               {...endProps}
               disabled={disabledEnd}
