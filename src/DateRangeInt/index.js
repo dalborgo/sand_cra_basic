@@ -67,7 +67,6 @@ const DatePickerField = ({
             <TextField
               {...endProps}
               disabled={disabledEnd}
-              inputRef={refer}
               error={false}
               helperText={null}
               InputLabelProps={
@@ -81,6 +80,7 @@ const DatePickerField = ({
                   disabled: disabledEnd,
                 }
               }
+              inputRef={refer}
               onFocus={
                 event => {
                   if (end && !open) {
