@@ -1,9 +1,9 @@
 import React from 'react'
 import Page from 'src/components/Page'
 import { Box, makeStyles } from '@material-ui/core'
-import Header from './Header'
-import { useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { messages } from 'src/translations/messages'
+import StandardHeader from 'src/components/StandardHeader'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,11 +40,13 @@ const ClosingDay = () => {
       title={intl.formatMessage(messages['menu_closing_day'])}
     >
       <Box p={3} pb={2}>
-        <Header/>
+        <StandardHeader>
+          <FormattedMessage defaultMessage="Chiusure di giornata" id="reports.closing_day.header_title"/>
+        </StandardHeader>
       </Box>
       <div className={classes.content}>
         <div className={classes.innerFirst}>
-          Prova
+          Running Tables
         </div>
       </div>
     </Page>
