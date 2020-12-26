@@ -1,0 +1,39 @@
+CREATE INDEX `adv_date_type_archived` ON `astenpos`(`date`) WHERE ((`type` = "PAYMENT") and (`archived` = true))
+CREATE INDEX adv_date_type_archived ON `astenpos`(`date`) WHERE `type` = 'PAYMENT' AND `archived` = true
+CREATE INDEX adv_archived_date_type ON `astenpos`(`archived`,`date`) WHERE (`type` = 'PAYMENT')
+
+CREATE INDEX adv_covered_closed_tables ON `astenpos`(`archived`,`date`,`mode`,`final_price`,`room_display`,`order`,`discount_price`,`income`,`closed_by`,`table_display`,`covers`,`owner`) WHERE (`type` = 'PAYMENT')
+
+SELECT MAX(buc.date) date,
+       SUM(buc.covers) covers,
+       SUM(buc.final_price) final_price,
+       SUM(buc.discount_price) discount_price,
+       ARRAY_AGG(buc.table_display)[0] table_display,
+       ARRAY_AGG(buc.room_display)[0] room_display,
+       ARRAY_AGG(buc.closed_by)[0] closed_by,
+       ARRAY_AGG(buc.income)[0] income,
+       ARRAY_AGG(buc.mode) mode
+FROM astenpos buc
+WHERE buc.type='PAYMENT'
+    AND buc.archived = TRUE
+    AND buc.date BETWEEN '20190515181021917' AND '20201221110944845'
+GROUP BY buc.`order`
+ORDER BY date DESC
+
+SELECT MAX(buc.date) date,
+       SUM(buc.covers) covers,
+       SUM(buc.final_price) final_price,
+       SUM(buc.discount_price) discount_price,
+       ARRAY_AGG(buc.table_display)[0] table_display,
+       ARRAY_AGG(buc.room_display)[0] room_display,
+       ARRAY_AGG(`user`.`user`)[0] closed_by,
+       ARRAY_AGG(buc.owner)[0] owner,
+       CASE WHEN COUNT(buc.mode) > 1 THEN ARRAY_AGG({"final_price": buc.final_price, "mode": buc.mode, "_id": META(buc).id, "date": buc.date, "covers": buc.covers, "income": income.display, "closed_by": `user`.`user`}) ELSE ARRAY_AGG({"mode": buc.mode, "_id": META(buc).id, "income": income.display})[0] END mode
+FROM astenpos buc LEFT
+    JOIN astenpos AS `user` ON KEYS buc.closed_by LEFT
+    JOIN astenpos AS income ON KEYS "PAYMENT_INCOME_" || buc.income
+WHERE buc.type='PAYMENT'
+    AND buc.archived = TRUE
+    AND buc.date BETWEEN '20190515181021917' AND '20201221110944845'
+GROUP BY buc.`order`
+ORDER BY date DESC
