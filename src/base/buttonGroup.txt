@@ -1,0 +1,32 @@
+ <ButtonGroup disableFocusRipple size="small" variant="contained">
+                {
+                  payments.mode !== 'PRECHECK' &&
+                  <Button className={clsx(classes.buttonGrouped, classes.buttonPink)}>
+                    <PrintIcon className={classes.printIcon}/>
+                  </Button>
+                }
+                <Button className={clsx(classes.buttonGrouped, classes.buttonCyan)}>
+                  <PrintIcon className={classes.printIcon}/>&nbsp;P
+                </Button>
+                <Button
+                  className={clsx(classes.buttonGrouped, classes.buttonGreen)}
+                  onClick={
+                    async () => {
+                      const queryKey = ['types/incomes', { owner }]
+                      if (!queryClient.getQueryData(queryKey)) {
+                        setLoading(true)
+                        setIntLoading(true)
+                        await queryClient.prefetchQuery(queryKey, { throwOnError: true })
+                        setIntLoading(false)
+                        setLoading(false)
+                      }
+                      history.push({
+                        pathname: `${window.location.pathname}/change-payment-method/${docId}`,
+                        income: payments.income,
+                      })
+                    }
+                  }
+                >
+                  {payments.income}
+                </Button>
+              </ButtonGroup>
