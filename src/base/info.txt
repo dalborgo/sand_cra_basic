@@ -1,8 +1,23 @@
-CREATE INDEX `adv_date_type_archived` ON `astenpos`(`date`) WHERE ((`type` = "PAYMENT") and (`archived` = true))
+//alternativo senza covered
 CREATE INDEX adv_date_type_archived ON `astenpos`(`date`) WHERE `type` = 'PAYMENT' AND `archived` = true
+// alternativo senza covered
 CREATE INDEX adv_archived_date_type ON `astenpos`(`archived`,`date`) WHERE (`type` = 'PAYMENT')
 
+//browser *
+CREATE INDEX `adv_type_meta_self_cas` ON `astenpos`(`type`,(meta(self).`cas`))
+// covered *
 CREATE INDEX adv_covered_closed_tables ON `astenpos`(`archived`,`date`,`mode`,`final_price`,`room_display`,`order`,`discount_price`,`income`,`closed_by`,`table_display`,`covers`,`owner`) WHERE (`type` = 'PAYMENT')
+
+//per singoli doc non fondamentali ma consigliati
+CREATE INDEX adv_archived_order_owner_type ON `astenpos`(`archived`,`order`,`owner`) WHERE `type` = 'PAYMENT'
+CREATE INDEX `adv_owner_type` ON `astenpos`(`owner`) WHERE (`type` = "ORDER")
+
+//quelli sopra sostituiti da questo importante
+CREATE INDEX `adv_owner_type` ON `astenpos`(`owner`,`type`)
+
+//covered per browser con ricerca type LIKE
+CREATE INDEX `adv_covered_browser_type_search` ON `astenpos`(`owner`,`type`,lower((meta(self).`id`)),(meta(self).`cas`))
+
 
 SELECT MAX(buc.date) date,
        SUM(buc.covers) covers,
