@@ -5,13 +5,11 @@ import { FormattedMessage } from 'react-intl'
 
 export default function BasicDateRangePicker () {
   const [value, setValue] = React.useState([null, null])
-  console.log('value:', value)
   return (
     <DateRangePicker
       allowSameDateSelection
       endText="Check-out"
       onChange={(newValue) => setValue(newValue)}
-      onError={console.log}
       renderInput={
         (startProps, endProps) => (
           <React.Fragment>

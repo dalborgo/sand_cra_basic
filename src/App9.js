@@ -44,7 +44,6 @@ const currentUserIDState = atom({
   default: 1,
 });
 const Child = memo(props => {
-  console.log('RENDER')
   const todoList = useRecoilValue(currentUserIDState);
   return <h1>around here ...</h1>
 })
@@ -54,10 +53,10 @@ Child.whyDidYouRender = true
 
 const Rou = memo(() => {
   const respDoc = useQuery(['docs/get_by_id', { docId: 'general_configuration' }], {
-    onSuccess: () => console.log('SUCC'),
+    onSuccess: () => null,
   })
   if (!respDoc.isLoading) {
-    console.log('respDoc:', respDoc)
+  
   }
   
   return (

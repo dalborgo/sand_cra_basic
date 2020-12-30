@@ -60,14 +60,12 @@ const useStore = create(immer(set => ({
 })))
 
 const Child = memo(props => {
-  console.log('RENDER')
   const { bar_room_name} = useStore(state => ({ bar_room_name: state.bears.bar_room_name }), shallow)
   return <h1>{bar_room_name} around here ...</h1>
 })
 
 const Rou = memo(() => {
   const respDoc = useQuery(['docs/get_by_id', { docId: 'general_configuration' }], { suspense: true })
-  console.log('respDoc:', respDoc.data)
   useStore.setState({ bears: respDoc.data.results })
   const change = useStore(state => state.change)
   return (
