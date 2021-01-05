@@ -113,7 +113,7 @@ const TableList = ({ rows, isFetching, isIdle, width }) => {
     const companySelect = ({ owner }) => companyData ? companyData?.[owner]?.name : owner
     const typeSelect = ({ payments }) => {
       const text = messages[`mode_${payments.mode}`] ? intl.formatMessage(messages[`mode_${payments.mode}`]) : payments.mode
-      return Array.isArray(payments) ? intl.formatMessage(messages['common_separatePayment']) : `${payments?.income}|${text}`
+      return Array.isArray(payments) ? intl.formatMessage(messages['common_dividedPayment']) : `${payments?.income}|${text}`
     }
     const finalPriceSelect = ({
       final_price: Fp,
