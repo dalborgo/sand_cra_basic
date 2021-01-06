@@ -125,7 +125,7 @@ const TableList = ({ rows, isFetching, isIdle, width }) => {
       { name: 'table_display', title: intl.formatMessage(messages['common_table']), getCellValue: tableSelect },
       { name: 'type', title: intl.formatMessage(messages['common_type']), getCellValue: typeSelect },
       { name: 'covers', title: intl.formatMessage(messages['common_covers']) },
-      { name: 'final_price', title: intl.formatMessage(messages['common_income']), getCellValue: finalPriceSelect },
+      { name: 'final_price', title: intl.formatMessage(messages['common_cashed']), getCellValue: finalPriceSelect },
     ]
     if (Object.keys(companyData).length < 2) {columns_.shift()}
     return columns_
