@@ -2,7 +2,6 @@ import React, { memo, useCallback, useRef, useState } from 'react'
 import {
   ExportPanel,
   Grid,
-  SearchPanel,
   Table,
   TableHeaderRow,
   TableRowDetail,
@@ -23,7 +22,6 @@ import { useIntl } from 'react-intl'
 import { messages } from 'src/translations/messages'
 import { LoadingComponent } from 'src/components/TableComponents'
 import { CellHeader, RootToolbar } from 'src/components/TableComponents/CellBase'
-import { SearchInput } from 'src/components/TableComponents/SearchInput'
 import { useMoneyFormatter } from 'src/utils/formatters'
 import TableDetailToggleCell from './comps/TableDetailToggleCellBase'
 import { withWidth } from '@material-ui/core'
@@ -31,6 +29,7 @@ import { GridExporter } from '@devexpress/dx-react-grid-export'
 import saveAs from 'file-saver'
 import moment from 'moment'
 import ExcelJS from 'exceljs'
+import SearchPanelIntl from 'src/components/TableComponents/SearchPanelIntl'
 
 const getRowId = row => row._id
 const Root = props => <Grid.Root {...props} style={{ height: '100%' }}/>
@@ -57,19 +56,7 @@ const IntegratedFilteringSel = memo(function IntegratedFilteringSel () {
     />
   )
 })
-const SearchPanelIntl = memo(function SearchPanelIntl () {
-  const intl = useIntl()
-  return (
-    <SearchPanel
-      inputComponent={SearchInput}
-      messages={
-        {
-          searchPlaceholder: intl.formatMessage(messages['common_search']),
-        }
-      }
-    />
-  )
-})
+
 const SelectiveTable = memo(function SelectiveTable ({ isIdle, isFetching, width }) {
   const noDataCellComponent = useCallback(({ colSpan }) =>
     <LoadingComponent colSpan={colSpan} idle={isIdle} isFetching={isFetching}/>, [isFetching, isIdle])
@@ -155,7 +142,7 @@ const TableList = ({ rows, isFetching, isIdle, width }) => {
         date: moment(row.date, 'YYYYMMDDHHmmssSSS').format('DD/MM/YYYY'),
       })
     }
-    worksheet.addRows(rows_);
+    worksheet.addRows(rows_)
     workbook.xlsx.writeBuffer().then(buffer => {
       saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'DataGrid.xlsx')
     })
