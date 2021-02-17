@@ -120,3 +120,11 @@ ORDER BY date DESC
 			doc._sync = sync;
 		}
 	}
+
+
+adv_date_type_archived
+CREATE INDEX `adv_covered_browser_type_search` ON `ast-20006-dev`(`owner`,`type`,lower((meta(self).`id`)),(meta(self).`cas`) DESC) WITH { "defer_build":true, "nodes":[ "dev-cluster-02-0009.dev-cluster-02.couchbase.svc:8091","dev-cluster-02-0010.dev-cluster-02.couchbase.svc:8091" ], "num_replica":1 }
+CREATE INDEX `adv_covered_closed_tables` ON `ast-20006-dev`(`archived`,`date`,`mode`,`final_price`,`room_display`,`order`,`discount_price`,`income`,`closed_by`,`table_display`,`covers`,`owner`,`number`) WHERE (`type` = "PAYMENT") WITH { "nodes":[ "dev-cluster-02-0009.dev-cluster-02.couchbase.svc:8091","dev-cluster-02-0010.dev-cluster-02.couchbase.svc:8091" ], "num_replica":1 }
+CREATE INDEX `adv_covered_closed_tables` ON `ast-20006-dev`(`archived`,`date`,`mode`,`final_price`,`room_display`,`order`,`discount_price`,`income`,`closed_by`,`table_display`,`covers`,`owner`,`number`) WHERE (`type` = "PAYMENT") WITH { "nodes":[ "dev-cluster-02-0009.dev-cluster-02.couchbase.svc:8091","dev-cluster-02-0010.dev-cluster-02.couchbase.svc:8091" ], "num_replica":1 }
+CREATE INDEX `adv_covered_installation` ON `ast-20006-dev`(`type`,object_remove(self, "type")) WITH { "defer_build":true, "nodes":[ "dev-cluster-02-0009.dev-cluster-02.couchbase.svc:8091","dev-cluster-02-0010.dev-cluster-02.couchbase.svc:8091" ], "num_replica":1 }
+CREATE INDEX `adv_owner_type` ON `ast-20006-dev`(`owner`,`type`) WITH { "defer_build":true, "nodes":[ "dev-cluster-02-0009.dev-cluster-02.couchbase.svc:8091","dev-cluster-02-0010.dev-cluster-02.couchbase.svc:8091" ], "num_replica":1 }
