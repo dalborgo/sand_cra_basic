@@ -113,7 +113,6 @@ function MainList () {
           <button
             onClick={
               event => {
-                event.persist()
                 const filter = document.getElementById('search').value
                 setText(filter)
               }
