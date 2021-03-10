@@ -35,7 +35,7 @@ const Import = () => {
             />
           }
         >
-          <FormattedMessage defaultMessage="Import" id="management.import.header_title"/>
+          <FormattedMessage defaultMessage="Import/export" id="management.import.header_title"/>
         </StandardHeader>
       </div>
       <DivContentWrapper>
