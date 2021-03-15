@@ -31,7 +31,7 @@ const Import = () => {
         <StandardHeader
           breadcrumb={
             <StandardBreadcrumb
-              crumbs={[{ to: '/app', name: 'DashBoard' }, { name: intl.formatMessage(messages['sub_management']) }]}
+              crumbs={[{ to: '/app', name: 'Home' }, { name: intl.formatMessage(messages['sub_management']) }]}
             />
           }
         >
