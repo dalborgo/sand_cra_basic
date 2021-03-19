@@ -24,7 +24,7 @@ import { LoadingComponent } from 'src/components/TableComponents'
 import { CellHeader, RootToolbar } from 'src/components/TableComponents/CellBase'
 import { useMoneyFormatter } from 'src/utils/formatters'
 import TableDetailToggleCell from './comps/TableDetailToggleCellBase'
-import { withWidth } from '@material-ui/core'
+import { isWidthDown, withWidth } from '@material-ui/core'
 import { GridExporter } from '@devexpress/dx-react-grid-export'
 import saveAs from 'file-saver'
 import moment from 'moment'
@@ -60,7 +60,7 @@ const IntegratedFilteringSel = memo(function IntegratedFilteringSel () {
 const SelectiveTable = memo(function SelectiveTable ({ isIdle, isFetching, width }) {
   const noDataCellComponent = useCallback(({ colSpan }) =>
     <LoadingComponent colSpan={colSpan} idle={isIdle} isFetching={isFetching}/>, [isFetching, isIdle])
-  const [isSmall] = useState(() => ['xs', 'sm'].includes(width)) //lo faccio statico
+  const [isSmall] = useState(() => isWidthDown('sm', width)) //lo faccio statico
   if (isSmall) {
     return (
       <Table
